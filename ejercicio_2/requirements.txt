@@ -1,2 +1,4 @@
-celery[librabbitmq,redis,auth,msgpack]
+celery
+redis
+rabbitmq
 requests

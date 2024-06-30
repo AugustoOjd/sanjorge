@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A app.tasks worker --loglevel=info
+    restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
+  chain_executor:
+    build: .
+    command: python /app/main.py
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - celery
